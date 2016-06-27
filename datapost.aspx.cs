@@ -12,28 +12,41 @@ public partial class datapost : System.Web.UI.Page
     private static SQLCon sql = new SQLCon();
     protected void Page_Load(object sender, EventArgs e)
     {
-        DataTable dt = sql.ReturnTable("select action_time,tem,hum from ActionMsg where tem <> 0");
-        string date1, date2;
-
-        date1 = "2014-7-22";
-        date2 = "2014-7-27";
-
-        if (Session["date"] != null && Session["date1"] != null)
+        string dateFrom = Request.Form["dateFrom"];
+        string dateTo = Request.Form["dateTo"];
+        string devId=Request.Form["devId"];
+        string strsql=null;
+        if (dateFrom == null||dateFrom=="")
         {
-            date1 = Session["date"].ToString();
-            date2 = Session["date1"].ToString();
-            //Session.Remove("date");
-            //Session.Remove("date1");
-
+            dateFrom = DateTime.Now.AddMonths(-1).ToString();
+            dateTo = DateTime.Now.ToString();
         }
+        else {
+            convertDate(dateFrom);
+            convertDate(dateTo);
+        }
+        if (devId == null||devId=="")
+            strsql = "select dev_id,action_time,action_num,i_num,tem,hum from ActionMsg where action_time between #" + dateFrom + "# AND #" + dateTo + "# ORDER BY action_time ASC";
+        else
+            strsql = "select dev_id,action_time,action_num,i_num,tem,hum from ActionMsg where action_time between #" + dateFrom + "# AND #" + dateTo + "# AND dev_id = '"+devId+"' ORDER BY action_time ASC";
+        DataTable dt = sql.ReturnTable(strsql);
 
         string json = CreateJsonParameters(dt);
+        Response.ContentType = "application/json";
         Response.Write(json);    
         Response.Flush();
+        dt.Dispose();
         Response.End();
 
     }
 
+    private void convertDate(string d) {
+        d.Replace('-','/');
+        if (d.Length >= "0000/00/00 00:00:00".Length)
+            return;
+        d = d.Substring(0,"0000/00/00".Length);
+        d += "00:00:00";
+    }
 
     public string CreateJsonParameters(DataTable dt)
     {

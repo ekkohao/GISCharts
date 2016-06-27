@@ -7,10 +7,12 @@ using System.Web.UI.WebControls;
 using System.Data;
 
 public partial class index : System.Web.UI.Page
-{  
+{
+    protected static SQLCon sql = new SQLCon();
+    protected DataTable dt = sql.ReturnTable("SELECT DISTINCT dev_id from ActionMsg");
     protected void Page_Load(object sender, EventArgs e)
     {
-        ClientScript.RegisterStartupScript(ClientScript.GetType(), "myscript", "<script>getInfo1();</script>");
+        dt.Dispose();
     }
 
 }
