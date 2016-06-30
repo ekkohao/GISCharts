@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="index" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="default.aspx.cs" Inherits="index" %>
 
 <!DOCTYPE html>
 
@@ -26,7 +26,15 @@
     <div id="bodier" class="">
         <div class="container ">
             <div class="widget">
-                <h3><i class="icon-signer"></i>曲线分析</h3>
+                <h3><i class="icon-signer"></i>
+                    曲线分析
+                    <span class="pull-right line-info"><i class="icon-info-sign"></i></span>
+                    <span class="info-box">
+                        提示：<br />
+                        1.按住&lt;shift&gt;点击可以平移<br />
+                        2.单击下方的图例可以显示或取消相应曲线<br />
+                    </span>
+                </h3>
                 <div id="line-chart" class="chart"></div>
             </div>  
             <div class="widget">
@@ -52,7 +60,15 @@
     <%-- 页尾 --%>
     <footer id="footer">
         <div class="container">
-            
+            <div class="row footer-bottom">
+                <div class="text-center" style="margin-bottom:10px">&copy; 2016 合肥科鼎电气有限公司</div>
+                <ul class="list-inline text-center">
+                    <li>官网：<a href="http://www.hfkeding.cn/" target="_blank">http://www.hfkeding.cn/</a></li>
+                    <li>电话：0551-65336059</li>
+                    <li>邮箱：<a href="mailto:hfkeding@sina.com">hfkeding@sina.com</a></li>
+                </ul>
+          
+            </div>
         </div>
     </footer>
     <aside class="aside-fix">

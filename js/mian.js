@@ -142,14 +142,14 @@
                         }]
                     });
                 });
-                console.log(arr_actiontime);
-                console.log(arr_tem);
-                console.log(arr_hum);
+                //console.log(arr_actiontime);
+                //console.log(arr_tem);
+                //console.log(arr_hum);
             }
         },
     })
     function LoadFunction() {
-        $("#line-chart").html('加载中...');
+        $("#line-chart").html("&nbsp;&nbsp;&nbsp;&nbsp;加载中...");
         $(".ac-table tbody").html("");
     }
     function erryFunction() {
@@ -157,11 +157,26 @@
     };
 }
 
-getInfo1("","","");
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+var d = GetQueryString("d");
+if (d != null)
+    getInfo1("", "", d);
+else
+    getInfo1("", "", "");
+
 $(document).ready(function(){
     $(".main-pick button").click(function () {
         var datefrom = $("#inputdatefrom").attr("value");
+        console.log(datefrom);
         var dateto = $("#inputdateto").attr("value");
+        if (datefrom == "" || dateto == "") {
+            alert("选择时间不能为空！");
+            return false;
+        }
         var d1 = new Date(datefrom.replace(/\-/g, "\/"));
         var d2 = new Date(dateto.replace(/\-/g, "\/"));
         if (d1 > d2){
@@ -169,7 +184,11 @@ $(document).ready(function(){
             return false;
         }
         var devid = $(".main-pick select").val();
-        getInfo1("2011/11/11", dateto, devid);
+        if (devid=="") {
+            alert("请选择设备！");
+            return false;
+        }
+        getInfo1(datefrom, dateto, devid);
         return false;
     });
     $(".aside-fix .pick-show").click(function () {
@@ -177,4 +196,9 @@ $(document).ready(function(){
         //if($(".aside-pick").hasClass("aside-active"))
         //    $(".aside-pick .main-pick").
     });
+    $(".line-info").hover(function () {      
+        $(".info-box").fadeIn();
+    },function () {
+        $(".info-box").fadeOut();
+    })
 })
