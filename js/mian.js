@@ -172,4 +172,9 @@ $(document).ready(function(){
         getInfo1("2011/11/11", dateto, devid);
         return false;
     });
+    $(".aside-fix .pick-show").click(function () {
+        $(".aside-fix").toggleClass("aside-active");
+        //if($(".aside-pick").hasClass("aside-active"))
+        //    $(".aside-pick .main-pick").
+    });
 })

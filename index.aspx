@@ -55,28 +55,33 @@
             
         </div>
     </footer>
-    <form class="main-pick">
-        <div class="form-group">
-            <label>起始日期：</label>
-            <input id='inputdatefrom' class='input form-control' readOnly="true"  />
-        </div>
-        <div class="form-group">
-            <label>截至日期：</label>
-            <input id='inputdateto' class='input form-control' readOnly="true"  />
-        </div>
-        <div class="form-group">
-            <label>设备选择：</label>
-            <select class="form-control">
-                <% for (int i = 0; i < dt.Rows.Count; i++)
-                   {
-                       string s=dt.Rows[i]["dev_id"].ToString();
-                       Response.Write("<option value='"+s+"'>"+s+"</option>");
-                   }    
-                 %>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">查询</button>
-    </form>
+    <aside class="aside-fix">
+        <div class="pick-show"><i class="icon-play"></i></div>
+        <form class="f-main-pick">
+            <div class="main-pick">
+            <div class="form-group">
+                <label>起始日期：</label>
+                <input id='inputdatefrom' class='input form-control' readOnly="true"  />
+            </div>
+            <div class="form-group">
+                <label>截至日期：</label>
+                <input id='inputdateto' class='input form-control' readOnly="true"  />
+            </div>
+            <div class="form-group">
+                <label>设备选择：</label>
+                <select class="form-control">
+                    <% for (int i = 0; i < dt.Rows.Count; i++)
+                       {
+                           string s=dt.Rows[i]["dev_id"].ToString();
+                           Response.Write("<option value='"+s+"'>"+s+"</option>");
+                       }    
+                     %>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">查询</button>
+            </div>
+        </form>
+    </aside>
     <script type="text/javascript">
         rome(inputdatefrom);
         rome(inputdateto);
