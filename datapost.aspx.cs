@@ -14,38 +14,41 @@ public partial class datapost : System.Web.UI.Page
     {
         string dateFrom = Request.Form["dateFrom"];
         string dateTo = Request.Form["dateTo"];
-        string devId=Request.Form["devId"];
+        string devName=Request.Form["devId"];
         string strsql=null;
-        if (dateFrom == null||dateFrom=="")
-        {
-            dateFrom = DateTime.Now.AddMonths(-1).ToString();
-            dateTo = DateTime.Now.ToString();
-        }
-        else {
-            convertDate(dateFrom);
-            convertDate(dateTo);
-        }
-        if (devId == null||devId=="")
-            strsql = "select dev_id,action_time,action_num,i_num,tem,hum from ActionMsg where action_time between #" + dateFrom + "# AND #" + dateTo + "# ORDER BY action_time ASC";
-        else
-            strsql = "select dev_id,action_time,action_num,i_num,tem,hum from ActionMsg where action_time between #" + dateFrom + "# AND #" + dateTo + "# AND dev_id = '"+devId+"' ORDER BY action_time ASC";
-        DataTable dt = sql.ReturnTable(strsql);
 
-        string json = CreateJsonParameters(dt);
+        convertDate(dateFrom);
+        convertDate(dateTo);
+
+        DataTable dt=null;
+        DataTable dt2 = sql.ReturnTable("SELECT Dev_List.id,Dev_List.dev_name,Dev_List.dev_phase,Group_List.group_name FROM Dev_List,Group_List WHERE Dev_List.group_id=Group_List.id AND Dev_List.dev_name='" + devName + "'");
+        string dev_id="";
+        if (null != dt2 && 0 < dt2.Rows.Count) { 
+            dev_id=dt2.Rows[0][0].ToString();
+            strsql = "select action_time,action_num,i_num,tem,hum from ActionMsg where action_time between #" + dateFrom + "# AND #" + dateTo + "# AND dev_id = " + dev_id + " ORDER BY ActionMsg.action_time ASC";
+            dt = sql.ReturnTable(strsql);
+        }
+      
+        
+        string json1 = CreateJsonParameters(dt);
+        string json2 = CreateJsonParameters2(dt2);
+        string json = "{\"data\":" + json1 + ",\"devinfo\":" + json2 + "}";
         Response.ContentType = "application/json";
         Response.Write(json);    
         Response.Flush();
-        dt.Dispose();
+        if(dt!=null)
+            dt.Dispose();
         Response.End();
 
     }
 
     private void convertDate(string d) {
-        d.Replace('-','/');
-        if (d.Length >= "0000/00/00 00:00:00".Length)
-            return;
-        d = d.Substring(0,"0000/00/00".Length);
-        d += "00:00:00";
+        if (d != null)
+        {
+            d.Replace('-', '/');
+            if (d.Length == 15)
+                d += ":00";
+        }
     }
 
     public string CreateJsonParameters(DataTable dt)
@@ -77,7 +80,29 @@ public partial class datapost : System.Web.UI.Page
         }
         else
         {
-            return null;
+            return "null";
+        }
+    }
+    public string CreateJsonParameters2(DataTable dt)
+    {
+        StringBuilder JsonString = new StringBuilder();
+        if (null != dt && 0 < dt.Rows.Count)
+        {
+            JsonString.Append("{");
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                string ColumnName= "\"" + dt.Columns[j].ColumnName.ToString().Replace("\"", "\\\"") + "\":\"";
+                JsonString.Append(ColumnName);
+                JsonString.Append(dt.Rows[0][j].ToString().Replace("\"", "\\\""));
+                JsonString.Append("\",");
+            }
+            JsonString.Remove(JsonString.Length - 1, 1);
+            JsonString.Append("}");
+            return JsonString.ToString();
+        }
+        else
+        {
+            return "null";
         }
     }
 }

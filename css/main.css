@@ -69,8 +69,18 @@ body {
     padding-top:30px;
     padding-bottom:10px;
 }
-.widget .ac-table th,.widget .ac-table td{
+.widget .table th,.widget .table td{
     text-align:center;
+}
+.widget dl{
+    margin-top:15px;
+    font-size:16px
+}
+/*.widget dl dt{
+    color:#3ba0ea
+}*/
+.widget .table {
+    margin-bottom:0;
 }
 /**
  *footer
@@ -182,6 +192,9 @@ i[class^="icon-"] {
 }
 .icon-info-sign:before{
     content: "\f05a";
+}
+.icon-screenshot:before{
+    content: "\f05b";
 }
 
 .rd-container {

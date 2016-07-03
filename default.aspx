@@ -26,6 +26,12 @@
     <div id="bodier" class="">
         <div class="container ">
             <div class="widget">
+                <h3><i class="icon-screenshot"></i>设备信息</h3>
+                <dl class="devinfo dl-horizontal info">
+                   <dd> &nbsp;&nbsp;&nbsp;&nbsp;请选择设备</dd>
+                </dl>
+            </div>  
+            <div class="widget">
                 <h3><i class="icon-signer"></i>
                     曲线分析
                     <span class="pull-right line-info"><i class="icon-info-sign"></i></span>
@@ -35,14 +41,13 @@
                         2.单击下方的图例可以显示或取消相应曲线<br />
                     </span>
                 </h3>
-                <div id="line-chart" class="chart"></div>
+                <div id="line-chart" class="chart">&nbsp;&nbsp;&nbsp;&nbsp;请选择设备</div>
             </div>  
             <div class="widget">
                 <h3><i class="icon-list-of"></i>数据表格</h3>
                 <table class="table table-striped table-hover ac-table">
                     <thead>
                         <tr>
-                          <th>设备编号</th>
                           <th>动作时间</th>
                           <th>动作次数</th>
                           <th>电流（uA）</th>
@@ -51,7 +56,7 @@
                         </tr>
                     </thead>
                     <tbody>
-
+                        <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;请选择设备</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -88,13 +93,13 @@
                 <select class="form-control">
                     <% for (int i = 0; i < dt.Rows.Count; i++)
                        {
-                           string s=dt.Rows[i]["dev_id"].ToString();
+                           string s=dt.Rows[i]["dev_name"].ToString();
                            Response.Write("<option value='"+s+"'>"+s+"</option>");
                        }    
                      %>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">查询</button>
+            <button id="sc" type="submit" class="btn btn-primary">查询</button>
             </div>
         </form>
     </aside>
